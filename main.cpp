@@ -4,12 +4,15 @@
 #include <utility>
 #include <string>
 
-// Brute force: check every pair, O(n^2) time, O(1) extra space
-std::pair<int,int> twoSumBruteForce(const std::vector<int>& nums, int target) {
+std::pair<int,int> twoSumBruteForce(const std::vector<int>& nums, int target) 
+{
     int n = nums.size();
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (nums[i] + nums[j] == target) {
+    for (int i = 0; i < n; i++) 
+    {
+        for (int j = i + 1; j < n; j++) 
+        {
+            if (nums[i] + nums[j] == target) 
+            {
                 return {i, j};
             }
         }
@@ -17,14 +20,17 @@ std::pair<int,int> twoSumBruteForce(const std::vector<int>& nums, int target) {
     return {-1, -1};
 }
 
-// Hash-based: one pass, O(n) time, O(n) space
-std::pair<int,int> twoSumHash(const std::vector<int>& nums, int target) {
+// Hash-based
+std::pair<int,int> twoSumHash(const std::vector<int>& nums, int target) 
+{
     std::unordered_map<int,int> seen; // value -> index
     int n = nums.size();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) 
+    {
         int complement = target - nums[i];
         auto it = seen.find(complement);
-        if (it != seen.end()) {
+        if (it != seen.end()) 
+        {
             return {it->second, i};
         }
         seen[nums[i]] = i;
@@ -32,9 +38,9 @@ std::pair<int,int> twoSumHash(const std::vector<int>& nums, int target) {
     return {-1, -1};
 }
 
-// Checks that a result is a real, valid answer: both indices in range,
-// not the same index used twice, and the values actually sum to target.
-bool isValidResult(const std::vector<int>& nums, int target, std::pair<int,int> result) {
+
+bool isValidResult(const std::vector<int>& nums, int target, std::pair<int,int> result) 
+{
     int i = result.first, j = result.second;
     int n = nums.size();
     if (i < 0 || j < 0) return false;
@@ -44,23 +50,27 @@ bool isValidResult(const std::vector<int>& nums, int target, std::pair<int,int> 
 }
 
 void printOutcome(const std::string& label, const std::vector<int>& nums,
-                   int target, std::pair<int,int> result) {
-    bool ok = isValidResult(nums, target, result);
+                   int target, std::pair<int,int> result) 
+                   {
+    bool yes = isValidResult(nums, target, result);
     std::cout << label << " -> indices (" << result.first << ", " << result.second << ")";
-    if (ok) {
+    if (yes)
+    {
         std::cout << ", values (" << nums[result.first] << ", " << nums[result.second] << ")";
     }
     std::cout << ", valid: " << (ok ? "yes" : "no") << "\n";
 }
 
-void runTest(const std::string& name, const std::vector<int>& nums, int target) {
+void runTest(const std::string& name, const std::vector<int>& nums, int target)
+ {
     std::cout << name << " (target = " << target << ")\n";
     printOutcome("  Brute force", nums, target, twoSumBruteForce(nums, target));
     printOutcome("  Hash lookup", nums, target, twoSumHash(nums, target));
     std::cout << "\n";
 }
 
-int main() {
+int main() 
+{
     runTest("Required test", {15, 4, 18, 8, 19, 22, 24, 59, 59, 20, 18, 12, 36, 42, 9}, 24);
     runTest("Basic example", {2, 7, 11, 15}, 9);
     runTest("Duplicate values", {3, 3}, 6);
